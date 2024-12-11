@@ -16,9 +16,12 @@ const validationSchema = yup.object().shape({
     .required("Required")
     .min(3, "Too short")
     .max(50, "Too long"),
-  number: yup
+  phone: yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, "Number must be in the format 123-456-7890")
+    .matches(
+      /^\d{3}-\d{3}-\d{4}$/,
+      "Phone number must be in the format 123-456-7890"
+    )
     .required("Required"),
 });
 
@@ -28,14 +31,14 @@ const ContactForm = () => {
   const handleAddContact = (values) => {
     const formattedValues = {
       ...values,
-      number: formatPhoneNumber(values.number.replace(/-/g, "")),
+      phone: formatPhoneNumber(values.phone.replace(/-/g, "")),
     };
     dispatch(addContact(formattedValues));
   };
 
   return (
     <Formik
-      initialValues={{ name: "", number: "" }}
+      initialValues={{ name: "", phone: "" }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
         handleAddContact(values);
@@ -53,10 +56,10 @@ const ContactForm = () => {
           className={styles.errorMessage}
         />
 
-        <label htmlFor="number">Number</label>
-        <Field className={styles.input} type="text" name="number" />
+        <label htmlFor="phone">Phone</label>
+        <Field className={styles.input} type="text" name="phone" />
         <ErrorMessage
-          name="number"
+          name="phone"
           component="div"
           className={styles.errorMessage}
         />

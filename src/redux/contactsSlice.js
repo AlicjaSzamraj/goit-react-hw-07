@@ -3,6 +3,7 @@ import axios from "axios";
 
 const BASE_URL = "https://6759ea1b099e3090dbe34ff3.mockapi.io/contacts";
 
+// Asynchroniczne operacje
 export const fetchContacts = createAsyncThunk("contacts/fetchAll", async () => {
   const response = await axios.get(BASE_URL);
   return response.data;
