@@ -5,6 +5,10 @@ import styles from "./ContactForm.module.css";
 import { useDispatch } from "react-redux";
 import { addContact } from "../redux/contactsSlice";
 
+const formatPhoneNumber = (number) => {
+  return number.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+};
+
 const validationSchema = yup.object().shape({
   name: yup
     .string()
@@ -14,17 +18,19 @@ const validationSchema = yup.object().shape({
     .max(50, "Too long"),
   number: yup
     .string()
-    .matches(/^[0-9]*$/, "Number can only contain digits")
-    .required("Required")
-    .min(3, "Too short")
-    .max(50, "Too long"),
+    .matches(/^\d{3}-\d{3}-\d{4}$/, "Number must be in the format 123-456-7890")
+    .required("Required"),
 });
 
 const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleAddContact = (values) => {
-    dispatch(addContact(values));
+    const formattedValues = {
+      ...values,
+      number: formatPhoneNumber(values.number.replace(/-/g, "")),
+    };
+    dispatch(addContact(formattedValues));
   };
 
   return (
