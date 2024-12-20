@@ -8,7 +8,7 @@ import {
   addContact,
   deleteContact,
 } from "./redux/contactsSlice";
-import { setFilter } from "./redux/filtersSlice";
+import { setFilter, resetFilter } from "./redux/filtersSlice";
 
 const App = () => {
   const contacts = useSelector((state) => state.contacts.items);
@@ -19,6 +19,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchContacts());
+    dispatch(resetFilter());
   }, [dispatch]);
 
   const handleAddContact = (newContact) => {
